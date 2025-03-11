@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import threading
 import logging
 from odoo import models, api
@@ -40,7 +39,7 @@ class PoSOrderWebhook(models.Model):
         """
         Prepares the data payload for the webhook.
         """
-        return json.dumps({
+        return {
             'pos_order_id': self.id,
             'name': self.name,
             'date_order': str(self.date_order),
@@ -105,7 +104,7 @@ class PoSOrderWebhook(models.Model):
                 'name': self.fiscal_position_id.name if self.fiscal_position_id else None,
             },
             'note': getattr(self, 'general_note', None),
-        })
+        }
 
     @staticmethod
     def send_webhook(webhook_url, data):
